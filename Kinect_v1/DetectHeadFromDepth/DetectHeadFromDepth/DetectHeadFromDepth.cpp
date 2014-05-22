@@ -69,7 +69,7 @@ public:
   void run()
   {
     cv::Mat image;
-	cv::Mat depthImage = cv::Mat::zeros(height, width, CV_8UC3);
+	cv::Mat depthImage = cv::Mat::zeros(height, width, CV_8UC1);
 
     // ƒƒCƒ“ƒ‹[ƒv
     while ( 1 ) {
@@ -149,17 +149,13 @@ private:
         LONG depthY = i / width;
 
         // ‹——£‚ğ³‹K‰»‚µC‰æ‘œ‚ÉŠi”[
-		int index = ((depthY * width) + depthX) * 3;
+		int index = ((depthY * width) + depthX);
         UCHAR* data = &image.data[index];
 		if ( SENCEING_MIN <= distance & distance <= SENCEING_MAX ) {
-		  int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) );
-		  data[0] = distanceColor;
-		  data[1] = distanceColor;
-		  data[2] = distanceColor;
+		  int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) ) * 10;
+		  *data = distanceColor % 255;
         }else {
-		  data[0] = 0;
-		  data[1] = 0;
-		  data[2] = 0;
+		  *data = 0;
 		}
 
 		if(depthX == 0 && depthY==0){

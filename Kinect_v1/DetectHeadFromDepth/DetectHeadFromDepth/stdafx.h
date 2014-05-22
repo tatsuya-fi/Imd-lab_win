@@ -11,6 +11,16 @@
 #include <tchar.h>
 
 
+// 追加のヘッダファイル
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+// KinectSDK
+#include "myKinectSDK.h"
 // OpenCV
-#include "myOpenCV.h"
+#include "myOpenCV.h"]
+
+using namespace std;
 

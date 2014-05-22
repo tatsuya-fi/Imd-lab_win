@@ -1,0 +1,39 @@
+﻿2014/04/22 18:22:12 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\PCLSample1\PCLSample1\PCLSample1.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\\inc" /I"C:\Program Files (x86)\PCL 1.6.0\3rdParty\VTK\include\vtk-5.8" /I"C:\Program Files (x86)\PCL 1.6.0\3rdParty\Boost\include" /I"C:\Program Files (x86)\PCL 1.6.0\3rdParty\Eigen\include" /I"C:\Program Files (x86)\PCL 1.6.0\include\pcl-1.6" /ID:\opencv248\opencv\build\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KinectControl.cpp main.cpp
+         main.cpp
+         Unknown compiler version - please run the configure tests and report the results
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\point_traits.h : warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1008): error C4996: 'pcl::SHOT': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1003) : 'pcl::SHOT' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1009): error C4996: 'pcl::SHOT': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1003) : 'pcl::SHOT' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1012): error C4996: 'pcl::SHOT::rf': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1005) : 'pcl::SHOT::rf' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1013): error C4996: 'pcl::SHOT::descriptor': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1014): error C4996: 'pcl::SHOT::descriptor': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+         KinectControl.cpp
+         Unknown compiler version - please run the configure tests and report the results
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\point_traits.h : warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1008): error C4996: 'pcl::SHOT': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1003) : 'pcl::SHOT' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1009): error C4996: 'pcl::SHOT': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1003) : 'pcl::SHOT' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1012): error C4996: 'pcl::SHOT::rf': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1005) : 'pcl::SHOT::rf' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1013): error C4996: 'pcl::SHOT::descriptor': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+     1>c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1014): error C4996: 'pcl::SHOT::descriptor': USE SHOT352 FOR SHAPE AND SHOT1344 FOR SHAPE+COLOR INSTEAD
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+                 c:\program files (x86)\pcl 1.6.0\include\pcl-1.6\pcl\impl\point_types.hpp(1004) : 'pcl::SHOT::descriptor' の宣言を確認してください。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\pclsample1\pclsample1\kinectcontrol.cpp(126): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+         コードを生成中...
+     1>プロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\PCLSample1\PCLSample1\PCLSample1.vcxproj" (Build ターゲット) のビルドが終了しました -- 失敗。
+
+ビルドに失敗しました。
+
+経過時間 00:00:13.43

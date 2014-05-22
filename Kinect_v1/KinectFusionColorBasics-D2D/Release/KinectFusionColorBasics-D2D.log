@@ -1,0 +1,29 @@
+﻿2014/05/14 12:11:00 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\KinectFusionColorBasics-D2D.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\opencv248\opencv\build\include /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KinectFusionColorBasics.cpp
+         KinectFusionColorBasics.cpp
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\kinectfusioncolorbasics-d2d\KinectFusionColorBasics.h(289): warning C4305: '初期化中' : 'double' から 'const float' へ切り詰めます。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\kinectfusioncolorbasics-d2d\KinectFusionColorBasics.h(290): warning C4305: '初期化中' : 'double' から 'const float' へ切り詰めます。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\kinectfusioncolorbasics-d2d\KinectFusionColorBasics.h(291): warning C4305: '初期化中' : 'double' から 'const float' へ切り詰めます。
+     1>KinectFusionColorBasics.cpp(110): warning C4244: '=' : 'double' から 'UINT' への変換です。データが失われる可能性があります。
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\Release\KinectFusionColorBasics-D2D.exe" /INCREMENTAL:NO /NOLOGO Kinect10.lib KinectFusion180_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\Release\KinectFusionColorBasics-D2D.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\Release\KinectFusionColorBasics-D2D.lib" /MACHINE:X86 /SAFESEH "Release\KinectFusionColorBasics-D2D.res"
+         Release\DepthMat.obj
+         Release\ImageRenderer.obj
+         Release\KinectFusionColorBasics.obj
+         Release\Timer.obj
+         コード生成しています。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\kinectfusioncolorbasics-d2d\depthmat.cpp(76): warning C4715: 'DepthMat::setMat' : 値を返さないコントロール パスがあります。
+         コード生成が終了しました。
+         KinectFusionColorBasics-D2D.vcxproj -> D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\Release\KinectFusionColorBasics-D2D.exe
+       PostBuildEvent:
+         xcopy /C /Y "C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\Redist\x86\KinectFusion180_32.dll" "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\Release\"
+         :VCEnd
+         C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\Redist\x86\KinectFusion180_32.dll
+         1 個のファイルをコピーしました
+     1>プロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\KinectFusionColorBasics-D2D\KinectFusionColorBasics-D2D.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:03.68

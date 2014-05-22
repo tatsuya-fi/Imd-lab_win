@@ -1,0 +1,17 @@
+﻿2014/05/14 0:30:23 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\SkeltonTest1\SkeltonTest1.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\\inc" /ID:\opencv248\opencv\build\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\skeltontest1\skeltontest1\skeltontest1.h(43): warning C4305: '初期化中' : 'double' から 'const float' へ切り詰めます。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\skeltontest1\skeltontest1\main.cpp(144): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\skeltontest1\skeltontest1\main.cpp(317): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>d:\users\tatsuya-fi\workspace\kinect for windows v1\skeltontest1\skeltontest1\main.cpp(321): warning C4805: '==' : 演算中の 'BOOL' 型と 'bool' 型の混用は安全ではありません
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\Debug\SkeltonTest1.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v1.8\\lib\x86" /LIBPATH:kernel32.lib /LIBPATH:user32.lib /LIBPATH:gdi32.lib /LIBPATH:winspool.lib /LIBPATH:comdlg32.lib /LIBPATH:advapi32.lib /LIBPATH:shell32.lib /LIBPATH:ole32.lib /LIBPATH:oleaut32.lib /LIBPATH:uuid.lib /LIBPATH:odbc32.lib /LIBPATH:odbccp32.lib Kinect10.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\Debug\SkeltonTest1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\Debug\SkeltonTest1.lib" /MACHINE:X86 Debug\main.obj
+         SkeltonTest1.vcxproj -> D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\Debug\SkeltonTest1.exe
+     1>プロジェクト "D:\Users\tatsuya-fi\Workspace\Kinect for Windows v1\SkeltonTest1\SkeltonTest1\SkeltonTest1.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:01.59

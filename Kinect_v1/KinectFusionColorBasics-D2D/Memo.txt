@@ -1,0 +1,47 @@
+<How to use>
+1. カメラにキャリブレーションパターンが映るように設置して左上から時計回りにクリック
+2. スペースボタンで1.と同じカメラ位置姿勢を取得
+3. kinectをスケルトンを検出できるよう設置し，スペースを押し，カメラto前カメラの変換行列を求める．
+4. cameraToPreCameraMat.txt, dispToCameraImgTransform.txtが出力される
+5. skeltonTest1.slnへ (スペルミス...)
+6. cameraToPreCameraTransMat, disp3dToPreCameraTransMatにそれぞれをコピー
+7. skeltonTest1を実行
+
+
+
+
+<memo>
+Matrix4* (KinectFusionColorBasics.cpp 40行目)
+カメラ座標系への変換行列
+
+GetCurrentWorldToCameraTransform(/* [out] */ Matrix4 *pWorldToCameraTransform)
+現フレームでのWorld to Cameraの座標変換（ワールド座標においける現在のカメラ座標）を求める
+
+INuiFusionColorReconstruction*   m_pVolume;
+Kinectが作成した三次元モデル，ここから現在のカメラ位置の座業変換を求める
+
+calculatedCameraPose
+計算された現在のカメラ位置姿勢行列
+M11 M21 M31 M41
+M12 M22 M32 M42
+M13 M23 M33 M43
+M14 M24 M34 M44
+書き換えると
+r11 r21 r31 0
+r12 r22 r32 0
+r13 r23 r33 0
+t1  t2  t2  1
+となっている．
+本来の行列の順番はこの転置行列の筈だがKinectFusionではこの記述で統一されている．原因不明．
+
+
+KinectFusionColorBasics.cpp 106行目より
+上からボクセルの密度，X, Y, Z軸のキャプチャする範囲の設定．
+広い範囲をキャプチャしようとするとすぐメモリオーバーの警告がでるので，ボクセル密度を下げよう
+
+    // Define a cubic Kinect Fusion reconstruction volume,
+    // with the Kinect at the center of the front face and the volume directly in front of Kinect.
+    m_reconstructionParams.voxelsPerMeter = 128;// 1000mm / 256vpm = ~3.9mm/voxel  
+	m_reconstructionParams.voxelCountX = 1024;   // 512 / 256vpm = 2m wide reconstruction
+	m_reconstructionParams.voxelCountY = 384;   // Memory = 512*384*512 * 4bytes per voxel
+	m_reconstructionParams.voxelCountZ = 1024;   // This will require a GPU with at least 512MB

@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "targetver.h"
-
 #include <stdio.h>
 #include <tchar.h>
 
@@ -20,7 +18,7 @@
 // KinectSDK
 #include "myKinectSDK.h"
 // OpenCV
-#include "myOpenCV.h"]
+#include "myOpenCV.h"
 
 using namespace std;
 

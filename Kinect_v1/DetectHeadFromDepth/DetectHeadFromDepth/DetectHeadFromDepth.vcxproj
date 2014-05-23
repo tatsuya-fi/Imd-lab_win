@@ -81,10 +81,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DetectHeadFromDepth.h" />
     <ClInclude Include="myKinectSDK.h" />
     <ClInclude Include="myOpenCV.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DetectHeadFromDepth.cpp" />

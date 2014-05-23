@@ -57,6 +57,8 @@ void DetectHeadFromDepth::run()
 
 		drawRgbImage( image );
 		drawDepthImage( depthImage );
+		// 領域をマージする
+		cv::dilate(depthImage, depthImage, cv::Mat(), cv::Point(-1, -1), 3);
 		detectEllipce( depthImage );
 
 		// 画像を表示する
@@ -131,20 +133,20 @@ void DetectHeadFromDepth::drawDepthImage( cv::Mat& image )
 		UCHAR* data = &image.data[index];
 
 		USHORT positionHeight = KINECT_HEIGHT - distance;
-		if ( SHOULDER_HEIGHT <= positionHeight && positionHeight <= SHOULDER_HEIGHT + SHOULDER_LENGTH ) {
+		if ( SHOULDER_HEIGHT <= positionHeight ) {// && positionHeight <= SHOULDER_HEIGHT + SHOULDER_LENGTH ) {
 			int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) ) * 1;
 			data[0] = 0;
 			data[1] = 0;
-			data[2] = 254;
+			data[2] = 0;
 		//if ( SENCEING_MIN <= distance & distance <= SENCEING_MAX ) {
 		//	int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) ) * 1;  // スケールをかけると距離の変化が見やすくする
 		//	data[0] = distanceColor % 255;
 		//	data[1] = distanceColor % 255;
 		//	data[2] = distanceColor % 255;
 		}else {
-			data[0] = 0;
-			data[1] = 0;
-			data[2] = 0;
+			data[0] = 254;
+			data[1] = 254;
+			data[2] = 254;
 		}
 	}
 
@@ -172,7 +174,7 @@ void DetectHeadFromDepth::detectEllipce( cv::Mat& image )
 		// 楕円フィッティング
 		cv::RotatedRect box = cv::fitEllipse(pointsf);
 		// 楕円の描画
-		cv::ellipse(image, box, cv::Scalar(0,0,255), 2, CV_AA);
+		cv::ellipse(image, box, cv::Scalar(0,69,255), 2, CV_AA);
 	}
 	
 	cv::imshow("bin image", bin_img);

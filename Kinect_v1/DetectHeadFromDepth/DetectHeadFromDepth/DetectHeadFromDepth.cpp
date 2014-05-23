@@ -69,7 +69,7 @@ public:
   void run()
   {
     cv::Mat image;
-	cv::Mat depthImage = cv::Mat::zeros(height, width, CV_8UC1);
+	cv::Mat depthImage = cv::Mat::zeros(height, width, CV_8UC3);
 
     // メインループ
     while ( 1 ) {
@@ -149,17 +149,17 @@ private:
         LONG depthY = i / width;
 
         // 距離を正規化し，画像に格納
-		int index = ((depthY * width) + depthX);
+		int index = ((depthY * width) + depthX) * 3;
         UCHAR* data = &image.data[index];
 		if ( SENCEING_MIN <= distance & distance <= SENCEING_MAX ) {
-		  int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) ) * 10;
-		  *data = distanceColor % 255;
+		  int distanceColor = (int)( (distance - SENCEING_MIN) * 255 / (SENCEING_MAX - SENCEING_MIN) ) * 15;  // スケールをかけて距離の変化が見やすくする
+		  data[0] = distanceColor % 255;
+		  data[1] = distanceColor % 255;
+		  data[2] = distanceColor % 255;
         }else {
-		  *data = 0;
-		}
-
-		if(depthX == 0 && depthY==0){
-			cout << distance << endl;
+		  data[0] = 0;
+		  data[1] = 0;
+		  data[2] = 0;
 		}
       }
 

@@ -53,25 +53,34 @@ void DetectHeadFromDepth::run()
 		cv::Mat depthImageHeadBuf		= cv::Mat::zeros(height, width, CV_8UC3);
 		cv::Mat depthImageShoulderBuf	= cv::Mat::zeros(height, width, CV_8UC3);
 		cv::Mat heightMat				= cv::Mat::zeros(height, width, CV_16U);
+		cv::Mat pointsMat				= cv::Mat::zeros(height, width, CV_32FC3);  // The camera coordinate value of each pixel in the depthImage 
 
 		// データの更新を待つ
 		DWORD ret = ::WaitForSingleObject( streamEvent, INFINITE );
 		::ResetEvent( streamEvent );
 
 		// 距離画像の作成
-		makeDepthImage( depthImage, heightMat );
+		makeDepthImage( depthImage, heightMat, pointsMat );
 		// RGB画像の描画
 		drawRgbImage( image );
 		// 領域をマージする
-		cv::dilate(depthImage, depthImage, cv::Mat(), cv::Point(-1, -1), 5);	//　膨張
+		cv::dilate(depthImage, depthImage, cv::Mat(), cv::Point(-1, -1), 3);	//　膨張
 		//cv::medianBlur(depthImage, depthImage, 3);
-		cv::imshow("test", depthImage);
 
 		// 矩形を抽出(boxes)
 		boxesInit();
 		detectEllipce( depthImage, depthImage, TRUE );
+		cv::imshow("test", depthImage);
+
 		// ユーザの高さごとに頭と肩領域を検出
-		drawDepthImage( heightMat, depthImage, depthImageHeadBuf, depthImageShoulderBuf );
+		drawDepthImage( heightMat, depthImage, depthImageHeadBuf, depthImageShoulderBuf, pointsMat );
+		cv::dilate(depthImageHeadBuf, depthImageHeadBuf, cv::Mat(), cv::Point(-1, -1), 5);	//　膨張
+		cv::dilate(depthImageShoulderBuf, depthImageShoulderBuf, cv::Mat(), cv::Point(-1, -1), 5);	//　膨張
+		// 頭描画
+		drawUserHead( depthImage );
+		// 手を検出
+		//detectHand ( depthImage, pointsMat );
+
 		// 検出された頭，肩領域に楕円フィッティング
 		detectEllipce( depthImageHeadBuf, depthImage, FALSE );
 		detectEllipce( depthImageShoulderBuf, depthImage, FALSE );
@@ -81,11 +90,11 @@ void DetectHeadFromDepth::run()
 		cv::namedWindow( DEPTH_IMAGE_WINNAME, CV_WINDOW_AUTOSIZE );
 		//ウインドウへコールバック関数とコールバック関数からイベント情報を受け取る変数を渡す。
 		cv::setMouseCallback( COLOR_IMAGE_WINNAME, &mfunc, &mparam );
-		// 画像を表示する
+		// 画像を表示する / Show each images
 		cv::imshow( COLOR_IMAGE_WINNAME, image );
 		cv::imshow( DEPTH_IMAGE_WINNAME, depthImage );
 
-		cv::imshow("Head detection", depthImageHeadBuf);
+		//cv::imshow("Head detection", depthImageHeadBuf);
 
 		// 終了のためのキー入力チェック兼、表示のためのウェイト
 		int key = cv::waitKey( 10 );
@@ -116,16 +125,16 @@ void DetectHeadFromDepth::createInstance()
 	}
 }
 
-void DetectHeadFromDepth::makeDepthImage( cv::Mat& depthImage, cv::Mat& heightMat ) {
+void DetectHeadFromDepth::makeDepthImage( cv::Mat& depthImage, cv::Mat& heightMat, cv::Mat& pointsMat ) {
 	// 距離カメラのフレームデータを取得する
 	NUI_IMAGE_FRAME depthFrame = { 0 };
 	ERROR_CHECK( kinect->NuiImageStreamGetNextFrame( depthStreamHandle, INFINITE, &depthFrame ) );
 
-	// 距離データを取得する
+	// 距離データを取得する / Get depth data
 	NUI_LOCKED_RECT depthData = { 0 };
 	depthFrame.pFrameTexture->LockRect( 0, &depthData, 0, 0 );
 
-	//　クリックフラグを立てる
+	//　クリックフラグを立てる / Make a click flag
 	BOOL depthCheckFlag = FALSE;
 	if ( mparam.event == cv::EVENT_LBUTTONDOWN ) {
 		depthCheckFlag = TRUE;
@@ -150,9 +159,7 @@ void DetectHeadFromDepth::makeDepthImage( cv::Mat& depthImage, cv::Mat& heightMa
 		}
 
 		// 高さ情報を記録
-		USHORT* p = &heightMat.at<USHORT>(depthY, depthX);
-		p[0] = positionHeight;
-		//heightMat.at<USHORT>(depthY, depthX) = positionHeight;
+		heightMat.at<USHORT>(depthY, depthX) = positionHeight;
 
 		// ユーザ領域を記憶
 		if ( USER_DETECT_HEIGHT <= positionHeight && positionHeight <= HEAD_HEIGHT_MAX ) {
@@ -165,12 +172,39 @@ void DetectHeadFromDepth::makeDepthImage( cv::Mat& depthImage, cv::Mat& heightMa
 			dataDepth[1] = 0;
 			dataDepth[2] = 0;
 		}
+
+		// ポイントクラウドを記憶
+		Vector4 realPoint = NuiTransformDepthImageToSkeleton(depthX, depthY, distance, CAMERA_RESOLUTION );
+		pointsMat.at<cv::Vec3f>(depthY,depthX)[0] = realPoint.x;
+		pointsMat.at<cv::Vec3f>(depthY,depthX)[1] = realPoint.y;
+		pointsMat.at<cv::Vec3f>(depthY,depthX)[2] = realPoint.z;
 	}
 
 	// フレームデータを解放する
 	ERROR_CHECK( kinect->NuiImageStreamReleaseFrame( depthStreamHandle, &depthFrame ) );
 }
 
+//void DetectHeadFromDepth::makeCameraCoordinateImage( cv::Mat& heightMat, cv::Mat& cameraCoordinateImage ) {
+//	cv::Mat debugPoint;
+//	cv::Mat debugPointImage = cv::Mat::ones(3,1,CV_32FC3);
+//	for ( int h=0; h<height; h++ ) {
+//		for ( int w=0; w<width; w++ ) {
+//			cv::Mat imagePoint = ( cv::Mat_<float>(3,1) << w, h, 1 ) * (float)heightMat.at<USHORT>(h,w);
+//			cv::Mat cameraPoint = KINECT_IN_PARAM.inv() * imagePoint;
+//			cameraCoordinateImage.at<cv::Vec3b>(h,w)[0] = cameraPoint.at<float>(0,0);
+//			cameraCoordinateImage.at<cv::Vec3b>(h,w)[1] = cameraPoint.at<float>(1,0);
+//			cameraCoordinateImage.at<cv::Vec3b>(h,w)[2] = cameraPoint.at<float>(2,0);
+//
+//			//debugPointImage.at<float>(0,0) = cameraCoordinateImage.at<cv::Vec3b>(h,w)[0];
+//			//debugPointImage.at<float>(1,0) = cameraCoordinateImage.at<cv::Vec3b>(h,w)[1];
+//			//debugPointImage.at<float>(2,0) = cameraCoordinateImage.at<cv::Vec3b>(h,w)[2];
+//			//debugPoint = KINECT_IN_PARAM * debugPointImage;
+//			//debugPoint /= debugPoint.at<float>(2,0);
+//			//cout << debugPoint << endl;
+//
+//		}
+//	}
+//}
 
 void DetectHeadFromDepth::drawRgbImage( cv::Mat& image )
 {
@@ -238,9 +272,9 @@ void DetectHeadFromDepth::detectEllipce( cv::Mat& srcImg, cv::Mat& dstImg, BOOL 
 	//cv::imshow("bin image", bin_img);
 }
 
-void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImage, cv::Mat& headImage, cv::Mat& shoulderImage )
+void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImage, cv::Mat& headImage, cv::Mat& shoulderImage, cv::Mat& pointsMat )
 {
-	USHORT headHeight[USER_NUM_MAX];
+	//USHORT headHeight[USER_NUM_MAX];
 
 
 	// 矩形ごとにもっとも高い位置(ユーザの頭)を探索
@@ -248,12 +282,21 @@ void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImag
 		if ( boxes[i].height == 0 || boxes[i].width == 0 ) {
 			break;
 		}
-		headHeight[i] = 0;
+		// Init
+		userHeads[i].headHeight = 0;
+		userHeads[i].headX2d = 0;
+		userHeads[i].headY2d = 0;
+
 		for ( int y = boxes[i].y; y < boxes[i].y + boxes[i].height; y++ ) {
 			for ( int x = boxes[i].x; x < boxes[i].x + boxes[i].width; x++ ) {
 				if ( 0 <= x && x < width && 0 <= y && y < height ) {
-					if ( heightMat.at<USHORT>(y, x) > headHeight[i] && heightMat.at<USHORT>(y,x) < HEAD_HEIGHT_MAX ) {
-						headHeight[i] = heightMat.at<USHORT>(y, x);
+					if ( heightMat.at<USHORT>(y, x) > userHeads[i].headHeight && heightMat.at<USHORT>(y,x) < HEAD_HEIGHT_MAX ) {
+						userHeads[i].headHeight = heightMat.at<USHORT>(y, x);
+						userHeads[i].headX2d = x;
+						userHeads[i].headY2d = y;
+						userHeads[i].headX   = pointsMat.at<cv::Vec3f>(y,x)[0];
+						userHeads[i].headY   = pointsMat.at<cv::Vec3f>(y,x)[1];
+						userHeads[i].headZ   = pointsMat.at<cv::Vec3f>(y,x)[2];
 					}
 				}
 			}
@@ -293,10 +336,9 @@ void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImag
 
 			for ( int i = 0; i < USER_NUM_MAX; i++ ) {
 				if ( boxes[i].height != 0 && boxes[i].width != 0 && boxes[i].contains(cv::Point(x,y)) ) {
-					//&& ( boxes[i].contains(cv::Point(x, y)) || boxes[i].contains(cv::Point(x-OFSET, y-OFSET)) || boxes[i].contains(cv::Point(x+OFSET, y-OFSET)) || boxes[i].contains(cv::Point(x+OFSET, y+OFSET)) || boxes[i].contains(cv::Point(x-OFSET, y+OFSET)) ) ) {
 					// 肩を描画
 					//if ( headHeight[i] - (HEAD_LENGTH + SHOULDER_LENGTH) <= heightMat.at<USHORT>(y, x) && heightMat.at<USHORT>(y, x) <= headHeight[i] - HEAD_LENGTH ){		// 頭を含まず楕円マッチング
-					if ( headHeight[i] - (HEAD_LENGTH + SHOULDER_LENGTH) <= heightMat.at<USHORT>(y, x) && heightMat.at<USHORT>(y, x) <= HEAD_HEIGHT_MAX){		// 頭を含んで楕円マッチング
+					if ( userHeads[i].headHeight - (HEAD_LENGTH + SHOULDER_LENGTH) <= heightMat.at<USHORT>(y, x) && heightMat.at<USHORT>(y, x) <= HEAD_HEIGHT_MAX){		// 頭を含んで楕円マッチング
 						data[0] = 255;
 						data[1] = 100;
 						data[2] = 0;
@@ -312,7 +354,7 @@ void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImag
 						dataShoulder[2] = 0;
 					} 
 					// 頭を描画
-					if ( headHeight[i] - HEAD_LENGTH <= heightMat.at<USHORT>(y, x) && heightMat.at<USHORT>(y, x) <= HEAD_HEIGHT_MAX ){
+					if ( userHeads[i].headHeight - HEAD_LENGTH <= heightMat.at<USHORT>(y, x) && heightMat.at<USHORT>(y, x) <= HEAD_HEIGHT_MAX ){
 						data[0] = 0;
 						data[1] = 180;
 						data[2] = 255;
@@ -339,7 +381,59 @@ void DetectHeadFromDepth::drawDepthImage( cv::Mat& heightMat, cv::Mat& depthImag
 	//cv::rectangle( depthImage, boxes[0], 255, 2, 8, 0);	// debug
 }
 
+void DetectHeadFromDepth::drawUserHead ( cv::Mat& depthImage ) {
+	for ( int i=0; i<USER_NUM_MAX; i++) {
+		if ( userHeads[i].headHeight > 0 ) {
+			cv::circle(depthImage, cv::Point(userHeads[i].headX2d, userHeads[i].headY2d), 8, CV_RGB(0,255,0), 3, CV_AA);
+		}
+		else {
+			break;
+		}
+	}
+}
 
+void DetectHeadFromDepth::detectHand( cv::Mat& depthImage, cv::Mat& pointsMat ) {
+	Vector4 handPoints[USER_NUM_MAX];	// 円に重なった部分の平均値
+	int countIntersection = 0;
+	for ( int num = 0; num < USER_NUM_MAX ; num++ ) {
+		// Init
+		handPoints[num].w = 1;
+		handPoints[num].x = 0;
+		handPoints[num].y = 0;
+		handPoints[num].z = 0;
+
+		if ( userHeads[num].headHeight > 0 && userHeads[num].headX2d > 0 && userHeads[num].headY2d > 0 ) {
+			for ( int h = 0; h < height; h++ ) {
+				for ( int w = 0; w < width; w++ ) {
+					//cout << userHeads[num].headHeight << endl;
+					//FLOAT length = sqrt( pow(userHeads[num].headX, 2) + pow(userHeads[num].headY , 2) + pow(userHeads[num].headZ, 2) );
+					FLOAT length = sqrt( pow(userHeads[num].headX - pointsMat.at<cv::Vec3f>(h,w)[0], 2) + pow(userHeads[num].headY - pointsMat.at<cv::Vec3f>(h,w)[1], 2) + pow(userHeads[num].headZ - pointsMat.at<cv::Vec3f>(h,w)[2], 2) );
+					if ( HAND_CIRCLE_RADIUS - 20 < length && length < HAND_CIRCLE_RADIUS + 20 ) { // 球上に点があるときの処理
+						cout << w << ", " << h <<endl;
+						handPoints[num].x += pointsMat.at<cv::Vec3f>(h,w)[0];
+						handPoints[num].y += pointsMat.at<cv::Vec3f>(h,w)[1];
+						handPoints[num].z += pointsMat.at<cv::Vec3f>(h,w)[2];
+						countIntersection++;
+						//cout << countIntersection << endl;
+					}
+				}
+			}
+			if ( countIntersection > 0 ) {
+				handPoints[num].x /= countIntersection;
+				handPoints[num].y /= countIntersection;
+				handPoints[num].z /= countIntersection;
+				LONG handPointX;
+				LONG handPointY;
+				USHORT dis; // debug
+				NuiTransformSkeletonToDepthImage( handPoints[num], &handPointX, &handPointY, &dis );
+				cv::circle(depthImage, cv::Point(handPointX, handPointY), 8, CV_RGB(0,0,255), 3, CV_AA);
+			}
+		}
+		else {
+			break;
+		}
+	}
+}
 
 ///
 /// コールバック関数

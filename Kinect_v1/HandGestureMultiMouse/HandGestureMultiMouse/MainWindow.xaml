@@ -1,0 +1,8 @@
+﻿<Window x:Class="HandGestureMultiMouse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button Content="Button" Height="128" HorizontalAlignment="Left" Margin="142,109,0,0" Name="button1" VerticalAlignment="Top" Width="258" />
+    </Grid>
+</Window>

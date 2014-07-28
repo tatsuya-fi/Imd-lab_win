@@ -1,0 +1,11 @@
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\bin\Debug\HandGestureMultiMouse.exe
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\bin\Debug\HandGestureMultiMouse.pdb
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\MainWindow.baml
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\MainWindow.g.cs
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\App.g.cs
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse_MarkupCompile.cache
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse.g.resources
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse.Properties.Resources.resources
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse.csproj.GenerateResource.Cache
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse.exe
+C:\Projects\Imd-lab_win\Kinect_v1\HandGestureMultiMouse\HandGestureMultiMouse\obj\x86\Debug\HandGestureMultiMouse.pdb
